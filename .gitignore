@@ -1,0 +1,9 @@
+build
+[Bb]in
+[Oo]bj
+_ReSharper.*
+*.cache
+*.gpState
+*.resharper
+*.user
+*.suo
