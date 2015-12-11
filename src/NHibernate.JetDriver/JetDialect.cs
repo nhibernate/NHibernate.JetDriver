@@ -234,5 +234,24 @@ namespace NHibernate.JetDriver
         {
             return new JetCaseFragment(this);
         }
+
+        /// <summary>
+        /// The SQL literal value to which this database maps boolean values. 
+        /// </summary>
+        /// <param name="value">The boolean value </param>
+        /// <returns>
+        /// The appropriate SQL literal. 
+        /// </returns>
+        public override string ToBooleanValueString(bool value)
+        {
+            if (value)
+            {
+                return "true";
+            }
+            else
+            {
+                return "false";
+            }
+        }
     }
 }
