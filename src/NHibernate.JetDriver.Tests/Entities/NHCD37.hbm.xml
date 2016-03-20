@@ -69,4 +69,13 @@
     </set>
   </class>
 
+  <class name="ThingsEntity" batch-size="20">
+    <id name="Id" column="Id" type="System.Int32" unsaved-value="null">
+      <generator class="native"/>
+    </id>
+
+    <property name="ThingName" column="[ThingName]" access="field.pascalcase-underscore" not-null="false" type="System.String"  insert="true" update="true"/>
+
+  </class>
+
 </hibernate-mapping>

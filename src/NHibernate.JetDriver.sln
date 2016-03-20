@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernate.JetDriver-2.0", "NHibernate.JetDriver\NHibernate.JetDriver-2.0.csproj", "{3905D37C-CA49-4C13-99A4-4D815EFCAA56}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernate.JetDriver.Tests", "NHibernate.JetDriver.Tests\NHibernate.JetDriver.Tests.csproj", "{408B5045-9B30-44BC-B10B-D2E2F17BC4FE}"

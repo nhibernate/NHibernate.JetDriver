@@ -35,7 +35,8 @@ namespace NHibernate.JetDriver.Tests
                 .SetProperty(Environment.ConnectionDriver, typeof(JetDriver).AssemblyQualifiedName)
                 .SetProperty(Environment.ConnectionProvider, typeof(DriverConnectionProvider).FullName)
                 .SetProperty(Environment.ShowSql, "true")
-                .SetProperty(Environment.ConnectionString, string.Format("Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0};", DataFile));
+                .SetDefaultNamespace("NHibernate.JetDriver.Tests.Entities")
+                .SetProperty(Environment.ConnectionString, string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};", DataFile));
 
             AddMappings();
             AddEntities();
@@ -46,7 +47,25 @@ namespace NHibernate.JetDriver.Tests
             if (autoCreateTables)
             {
                 CreateTables();
+                InsertSampleData();
             }
+        }
+
+        /// <summary>
+        /// Insert dummy data for the tests
+        /// </summary>
+        private void InsertSampleData()
+        {
+            var conn = new System.Data.OleDb.OleDbConnection(configuration.GetProperty(Environment.ConnectionString));
+            conn.Open();
+            new JetDbCommand("BEGIN TRANSACTION;", conn).ExecuteNonQuery();
+            new JetDbCommand("DELETE FROM thing;", conn).ExecuteNonQuery();
+            new JetDbCommand("INSERT INTO thing VALUES (1, 'Car');", conn).ExecuteNonQuery();
+            new JetDbCommand("INSERT INTO thing VALUES (2, 'Cat');", conn).ExecuteNonQuery();
+            new JetDbCommand("INSERT INTO thing VALUES (3, 'Apple');", conn).ExecuteNonQuery();
+            new JetDbCommand("INSERT INTO thing VALUES (4, 'Albacete');", conn).ExecuteNonQuery();
+            new JetDbCommand("INSERT INTO thing VALUES (5, 'Foo');", conn).ExecuteNonQuery();
+            new JetDbCommand("COMMIT;", conn).ExecuteNonQuery();
         }
 
         /// <summary>
@@ -89,12 +108,12 @@ namespace NHibernate.JetDriver.Tests
 
         protected virtual void CreateTables()
         {
-            new SchemaExport(configuration).Create(false, true);
+            new SchemaExport(configuration).Create(true, true);
         }
 
         protected virtual void DropTables()
         {
-            new SchemaExport(configuration).Drop(false, true);
+            new SchemaExport(configuration).Drop(true, true);
         }
 
         protected virtual IList<System.Type> EntityTypes

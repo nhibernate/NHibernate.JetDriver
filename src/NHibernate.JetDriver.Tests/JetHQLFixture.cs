@@ -12,6 +12,9 @@ namespace NHibernate.JetDriver.Tests
         public JetHQLFixture() : base(true)
         {
         }
+        public JetHQLFixture(bool createTables) : base(createTables)
+        {
+        }
 
         protected override IList<System.Type> EntityTypes
         {
@@ -25,6 +28,7 @@ namespace NHibernate.JetDriver.Tests
                                typeof(Category), 
                                typeof(ProductType),
                                typeof(Product),
+                               typeof(Thing)
                            }; 
             }
         }
@@ -142,6 +146,28 @@ namespace NHibernate.JetDriver.Tests
                 var count = list.Count;
 
                 Assert.That(count, Is.EqualTo(0));
+            }
+        }
+
+        [Test]
+        public void Testing_Limit_Feature()
+        {
+            using (var s = SessionFactory.OpenSession())
+            {
+                string hql = @"from Thing";
+
+                IQuery query = s.CreateQuery(hql);
+                var list = query.List();
+                int count = list.Count;
+                Assert.That(count, Is.EqualTo(5));
+
+                int MAX_RESULTS = 3;
+                Assert.That(MAX_RESULTS, Is.LessThanOrEqualTo(count));
+                IQuery query3 = s.CreateQuery(hql);
+                query3.SetMaxResults(MAX_RESULTS);
+                var list3 = query3.List();
+                int count3 = list3.Count;
+                Assert.That(count3, Is.EqualTo(MAX_RESULTS));
             }
         }
     }
