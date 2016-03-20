@@ -108,12 +108,12 @@ namespace NHibernate.JetDriver.Tests
 
         protected virtual void CreateTables()
         {
-            new SchemaExport(configuration).Create(true, true);
+            new SchemaExport(configuration).Create(false, true);
         }
 
         protected virtual void DropTables()
         {
-            new SchemaExport(configuration).Drop(true, true);
+            new SchemaExport(configuration).Drop(false, true);
         }
 
         protected virtual IList<System.Type> EntityTypes
