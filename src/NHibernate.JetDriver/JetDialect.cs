@@ -197,7 +197,7 @@ namespace NHibernate.JetDriver
         /// <returns>Processed query</returns>
         public override SqlString GetLimitString(SqlString querySqlString, int offset, int limit)
         {
-            return querySqlString.Replace("select", "select top " + limit);
+            return querySqlString.Replace("select", string.Format("select top {0}", limit));
         }
 
         /// <summary>
