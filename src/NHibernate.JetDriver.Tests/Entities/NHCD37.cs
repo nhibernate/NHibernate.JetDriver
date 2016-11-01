@@ -180,23 +180,4 @@ namespace NHibernate.JetDriver.Tests.TransformFromClauseBehaviour
             set { _ProductCatalogParent = value; }
         }
     }
-
-    [Serializable]
-    public class ThingsEntity
-    {
-        private object _Id;
-        private String _ThingName;
-
-        public virtual object Id
-        {
-            get { return _Id; }
-            set { _Id = value; }
-        }
-
-        public virtual String ThingName
-        {
-            get { return _ThingName; }
-            set { _ThingName = value; }
-        }
-    }
 }
