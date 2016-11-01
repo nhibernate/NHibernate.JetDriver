@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="NHibernate.JetDriver.Tests" namespace="NHibernate.JetDriver.Tests.Entities" auto-import="true">
+  <class name="NHibernate.JetDriver.Tests.Entities.Thing, NHibernate.JetDriver.Tests" table="`Thing`">
+
+    <id name="Id" column="Id" type="System.Int32" unsaved-value="null">
+      <generator class="native"/>
+    </id>
+
+    <property name="ThingName" column="`ThingName`" not-null="false" type="System.String"  insert="true" update="true"/>
+
+  </class>
+</hibernate-mapping>

@@ -168,7 +168,7 @@ namespace NHibernate.JetDriver
         /// <value>False.</value>
         public override bool SupportsLimit
         {
-            get { return false; }
+            get { return true; }
         }
 
         /// <summary>
@@ -187,9 +187,17 @@ namespace NHibernate.JetDriver
             get { return false; }
         }
 
+
+        /// <summary>
+        /// MS Access and SQL Server support limit. This implementation has been made according the MS Access syntax
+        /// </summary>
+        /// <param name="querySqlString">The original query</param>
+        /// <param name="offset">Specifies the number of rows to skip, before starting to return rows from the query expression.</param>
+        /// <param name="limit">Is used to limit the number of results returned in a SQL statement</param>
+        /// <returns>Processed query</returns>
         public override SqlString GetLimitString(SqlString querySqlString, int offset, int limit)
         {
-            throw new NotSupportedException("SQL Server does not support an offset");
+            return querySqlString.Replace("select", "select top " + limit);
         }
 
         /// <summary>
@@ -253,5 +261,6 @@ namespace NHibernate.JetDriver
                 return "false";
             }
         }
+
     }
 }
