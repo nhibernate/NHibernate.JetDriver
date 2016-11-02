@@ -35,7 +35,8 @@ namespace NHibernate.JetDriver.Tests
                 .SetProperty(Environment.ConnectionDriver, typeof(JetDriver).AssemblyQualifiedName)
                 .SetProperty(Environment.ConnectionProvider, typeof(DriverConnectionProvider).FullName)
                 .SetProperty(Environment.ShowSql, "true")
-                .SetProperty(Environment.ConnectionString, string.Format("Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0};", DataFile));
+                .SetDefaultNamespace("NHibernate.JetDriver.Tests.Entities")
+                .SetProperty(Environment.ConnectionString, GetConnectionString());
 
             AddMappings();
             AddEntities();
@@ -47,6 +48,11 @@ namespace NHibernate.JetDriver.Tests
             {
                 CreateTables();
             }
+        }
+
+        protected string GetConnectionString()
+        {
+            return string.Format("Provider = Microsoft.Jet.OLEDB.4.0;Data Source={0};", DataFile);
         }
 
         /// <summary>

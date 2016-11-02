@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using NHibernate.JetDriver.Tests.Entities;
@@ -10,6 +9,9 @@ namespace NHibernate.JetDriver.Tests
     public class JetHQLFixture : JetTestBase
     {
         public JetHQLFixture() : base(true)
+        {
+        }
+        public JetHQLFixture(bool createTables) : base(createTables)
         {
         }
 
@@ -25,6 +27,7 @@ namespace NHibernate.JetDriver.Tests
                                typeof(Category), 
                                typeof(ProductType),
                                typeof(Product),
+                               typeof(Thing)
                            }; 
             }
         }
@@ -32,6 +35,21 @@ namespace NHibernate.JetDriver.Tests
         protected override IList<string> Mappings
         {
             get { return new[] { "Entities.NHCD37.hbm.xml" }; }
+        }
+
+
+        protected override void CreateTables()
+        {
+            base.CreateTables();
+
+            var conn = new System.Data.OleDb.OleDbConnection(GetConnectionString());
+            conn.Open();
+
+            new JetDbCommand("INSERT INTO thing VALUES (1, 'Car');", conn).ExecuteNonQuery();
+            new JetDbCommand("INSERT INTO thing VALUES (2, 'Cat');", conn).ExecuteNonQuery();
+            new JetDbCommand("INSERT INTO thing VALUES (3, 'Apple');", conn).ExecuteNonQuery();
+            new JetDbCommand("INSERT INTO thing VALUES (4, 'Albacete');", conn).ExecuteNonQuery();
+            new JetDbCommand("INSERT INTO thing VALUES (5, 'Foo');", conn).ExecuteNonQuery();
         }
 
         [Test]
@@ -142,6 +160,26 @@ namespace NHibernate.JetDriver.Tests
                 var count = list.Count;
 
                 Assert.That(count, Is.EqualTo(0));
+            }
+        }
+
+        [Test]
+        public void Testing_Limit_Feature()
+        {
+            const int maxResults = 3;
+
+            using (var s = SessionFactory.OpenSession())
+            {
+                var hql = @"from Thing";
+
+                var queryAll = s.CreateQuery(hql);
+                var list = queryAll.List();
+                Assert.That(list.Count, Is.EqualTo(5));
+
+                var queryWithLimit = s.CreateQuery(hql)
+                                      .SetMaxResults(maxResults);
+                var limitedList = queryWithLimit.List();
+                Assert.That(limitedList.Count, Is.EqualTo(maxResults));
             }
         }
     }
